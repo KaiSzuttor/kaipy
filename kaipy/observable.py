@@ -25,13 +25,14 @@ def second_legendre(pos1, pos2, direction):
     - z (0,0,1)
   '''
   vec1 = pos1 - pos2
-  if (direction == 'x'):
-    vec2 = np.array([1,0,0])
-  elif (direction == 'y'):
-    vec2 = np.array([0,1,0])
-  elif (direction == 'z'):
-    vec2 = np.array([0,0,1])
-  else:
+  try:
+    if (direction == 'x'):
+      vec2 = np.array([1,0,0])
+    elif (direction == 'y'):
+      vec2 = np.array([0,1,0])
+    elif (direction == 'z'):
+      vec2 = np.array([0,0,1])
+  except:
     raise ValueError("Argument must be 'x','y' or 'z'")
   v1_norm = np.sqrt((vec1*vec1).sum())
   v2_norm = np.sqrt((vec2*vec2).sum())
