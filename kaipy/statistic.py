@@ -47,12 +47,12 @@
 import numpy as np
 
 def _bit_length_26(x):
-    if x == 0:
-        return 0
-    elif x == 1:
-        return 1
-    else:
-        return len(bin(x)) - 2
+  if x == 0:
+    return 0
+  elif x == 1:
+    return 1
+  else:
+    return len(bin(x)) - 2
 
 def _next_regular(target):
   """
