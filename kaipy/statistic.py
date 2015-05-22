@@ -64,11 +64,11 @@ def _next_regular(target):
   Target must be a positive integer.
   """
   if target <= 6:
-      return target
+    return target
 
   # Quickly check if it's already a power of 2
   if not (target & (target - 1)):
-      return target
+    return target
 
   match = float('inf')  # Anything found will be smaller
   p5 = 1
