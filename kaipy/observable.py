@@ -40,3 +40,29 @@ def second_legendre(pos1, pos2, direction):
     cos_angle = np.dot(vec1, vec2) / (v1_norm * v2_norm)
     second_legendre = 0.5 * (3 * cos_angle * cos_angle - 1)
     return second_legendre
+
+def rg2(x):
+    """
+    Calculates the squared radius of gyration for coordinates x
+    of a polymer.
+    """
+    rg2 = 0.0
+    r_mean = np.zeros(3)
+    r_mean[:] = np.mean(x, axis=0)
+    for i in range(len(x)):
+        rg2 += np.dot((x[i] - r_mean), (x[i] - r_mean))
+    rg2 /= len(x)
+    return rg2
+
+def rg2_compwise(x):
+    """
+    Calculates the componentwise squared radius of gyration
+    for coordinates x of a polymer
+    """
+    rg2 = np.zeros(3)
+    r_mean = np.zeros(3)
+    r_mean[:] = np.mean(x, axis=0)
+    for i in range(len(x)):
+        rg2 += (x[i]-r_mean)**2
+    rg2 /= len(x)
+    return rg2[0], rg2[1], rg2[2]
