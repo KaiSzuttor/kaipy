@@ -18,12 +18,29 @@ import numpy as np
 
 
 def second_legendre(pos1, pos2, direction):
-    """
+    """ Calculate the second legendre polonomial.
+
     Calculates second legendre polonomial of two given position vectors
     for the angle of (pos2-pos1, direction). direction can either be:
-      - x (1,0,0)
-      - y (0,1,0)
-      - z (0,0,1)
+
+    Parameters
+    ----------
+    pos1 : array_like
+        First position vector.
+    pos2 : array_like
+        Second position vector.
+    direction : str
+        Direction ('x', 'y', or 'z')
+
+    Returns
+    -------
+    float
+
+    Raises
+    ------
+    ValueError
+        If direction is not ('x', 'y' or 'z')
+
     """
     vec1 = pos1 - pos2
     try:
@@ -41,10 +58,21 @@ def second_legendre(pos1, pos2, direction):
     second_legendre = 0.5 * (3 * cos_angle * cos_angle - 1)
     return second_legendre
 
+
 def rg2(x):
-    """
-    Calculates the squared radius of gyration for coordinates x
-    of a polymer.
+    """ Square radius of gyration.
+
+    Calculates the squared radius of gyration for coordinates x of a polymer.
+
+    Parameters
+    ----------
+    x : array_like
+        Array of length number of beads of the polymer.
+
+    Returns
+    -------
+    float
+
     """
     rg2 = 0.0
     r_mean = np.zeros(3)
@@ -54,10 +82,21 @@ def rg2(x):
     rg2 /= len(x)
     return rg2
 
+
 def rg2_compwise(x):
-    """
+    """ Square radius of gyration component-wise.
+
     Calculates the componentwise squared radius of gyration
-    for coordinates x of a polymer
+    for coordinates x of a polymer.
+
+    Parameters
+    ----------
+    x: array_like
+       Array of length number of beads of polymer.
+
+    Returns
+    -------
+    float, float, float
     """
     rg2 = np.zeros(3)
     r_mean = np.zeros(3)

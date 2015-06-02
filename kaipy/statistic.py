@@ -123,8 +123,8 @@ def autocorrelation(x, nlags=50):
 def calc_error(data):
     """
     Error estimation for time series of simulation observables and take into
-    account that these series are to some kind degree correlated (which enhances
-    the estimated statistical error).
+    account that these series are to some kind degree correlated (which
+    enhances the estimated statistical error).
     """
     data = np.loadtxt(data)
     # calculate the normalized autocorrelation function of data
