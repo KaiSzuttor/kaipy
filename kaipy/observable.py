@@ -105,3 +105,21 @@ def rg2_compwise(x):
         rg2 += (x[i]-r_mean)**2
     rg2 /= len(x)
     return rg2[0], rg2[1], rg2[2]
+
+
+def end_to_end_distance(x):
+    """ End to end distance of polymer.
+
+    Calculates the absolute value of the end to end vector
+    for coordinates x of a polymer.
+
+    Parameters
+    ----------
+    x: array_like
+        Array of length number of beads of polymer.
+
+    Returns
+    -------
+    float
+    """
+    return np.linalg.norm(x[-1]-x[0])
