@@ -20,6 +20,6 @@ setup(
         'Topic :: Scientific/Engineering :: Physics'
     ],
     keywords='sample setuptools development',
-    packages=find_packages(exclude=['docs', 'tests*']),
+    packages=find_packages('kaipy', exclude=['docs', 'tests*']),
     install_requires=['numpy']
 )
