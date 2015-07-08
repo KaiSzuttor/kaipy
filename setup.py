@@ -21,5 +21,5 @@ setup(
     ],
     keywords='sample setuptools development',
     packages=find_packages('kaipy', exclude=['docs', 'tests*']),
-    install_requires=['numpy']
+    install_requires=['numpy>=1.9.2']
 )
