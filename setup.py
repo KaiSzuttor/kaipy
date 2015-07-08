@@ -18,7 +18,7 @@ setup(
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)'.
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 2.7',
         'Topic :: Scientific/Engineering :: Physics'
     ],
@@ -34,6 +34,5 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['numpy'],
-    },
+    install_requires=['numpy']
 )
