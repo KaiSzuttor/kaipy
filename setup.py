@@ -6,7 +6,7 @@ execfile('./kaipy/version.py')
 setup(
     name='kaipy',
     version=__version__,
-    description='A sample Python project',
+    description='Python package for data evaluation of simulations.', 
     url='https://github.com/KaiSzuttor/kaipy',
     author='Kai Szuttor',
     author_email='kaiszuttor@gmail.com',
