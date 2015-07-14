@@ -19,6 +19,6 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Topic :: Scientific/Engineering :: Physics'
     ],
-    packages=find_packages('kaipy', exclude=['doc', 'tests*']),
+    packages=find_packages('kaipy', exclude=['doc', 'test']),
     install_requires=['numpy>=1.9.2']
 )
