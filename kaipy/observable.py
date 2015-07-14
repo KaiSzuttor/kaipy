@@ -123,3 +123,30 @@ def end_to_end_distance(x):
     float
     """
     return np.linalg.norm(x[-1]-x[0])
+
+
+def center_of_mass(x, mass=None):
+    """ Center of mass of polymer.
+
+    Calculates the center of mass of a polymer with
+    given coordinates x of the monomers and optional
+    array of mass values mass.
+
+    Parameters
+    ----------
+    x: array_like
+        Array of length number of beads of polymer.
+    mass: Optional[array_like]
+        Array of length number of beads of polymer.
+
+    Returns
+    -------
+    array_like
+    """
+    if (mass != None):
+        com = np.sum([x[i,:]*mass[i] for i in range(len(mass))], axis=0)/np.sum(mass)
+    else:
+	com = np.sum(x, axis=0)/len(x)
+    return com
+	    
+
