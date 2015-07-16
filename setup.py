@@ -1,5 +1,7 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
+from Cython.Build import cythonize
+import numpy
 # Get current version
 execfile('./kaipy/version.py')
 
@@ -20,5 +22,7 @@ setup(
         'Topic :: Scientific/Engineering :: Physics'
     ],
     packages=find_packages(),
+    ext_modules = cythonize("kaipy/cython/*.pyx"),
+    include_dirs=[numpy.get_include()],
     install_requires=['numpy>=1.9.2']
 )

@@ -17,7 +17,6 @@
 import numpy as np
 cimport numpy as np
 
-DTYPE = np.float64
 ctypedef np.float64_t DTYPE_t
 
 def second_legendre(np.ndarray[DTYPE_t, ndim=1] pos1,
@@ -47,7 +46,7 @@ def second_legendre(np.ndarray[DTYPE_t, ndim=1] pos1,
 
     """
     cdef np.ndarray[DTYPE_t, ndim=1] vec1 = pos1 - pos2
-	cdef np.ndarray[DTYPE_t, ndim=1] vec2
+    cdef np.ndarray[DTYPE_t, ndim=1] vec2
     try:
         if (direction == 'x'):
             vec2 = np.array([1, 0, 0])
@@ -57,10 +56,10 @@ def second_legendre(np.ndarray[DTYPE_t, ndim=1] pos1,
             vec2 = np.array([0, 0, 1])
     except:
         raise ValueError("Argument must be 'x','y' or 'z'")
-    cdef DTYPE v1_norm = np.sqrt((vec1 * vec1).sum())
-    cdef DTYPE v2_norm = np.sqrt((vec2 * vec2).sum())
-    cdef DTYPE cos_angle = np.dot(vec1, vec2) / (v1_norm * v2_norm)
-    cdef DTYPE second_legendre = 0.5 * (3 * cos_angle * cos_angle - 1)
+    cdef DTYPE_t v1_norm = np.sqrt((vec1 * vec1).sum())
+    cdef DTYPE_t v2_norm = np.sqrt((vec2 * vec2).sum())
+    cdef DTYPE_t cos_angle = np.dot(vec1, vec2) / (v1_norm * v2_norm)
+    cdef DTYPE_t second_legendre = 0.5 * (3 * cos_angle * cos_angle - 1)
     return second_legendre
 
 
@@ -80,7 +79,7 @@ def rg2(np.ndarray[DTYPE_t, ndim=1] x):
 
     """
     cdef DTYPE_t rg2 = 0.0
-    cdef np.ndarray[D_TYPE_t, ndim=1] r_mean = np.zeros(3)
+    cdef np.ndarray[DTYPE_t, ndim=1] r_mean = np.zeros(3)
     r_mean[:] = np.mean(x, axis=0)
     for i in range(len(x)):
         rg2 += np.dot((x[i] - r_mean), (x[i] - r_mean))
@@ -149,9 +148,9 @@ def center_of_mass(np.ndarray[DTYPE_t, ndim=1] x,
     -------
     array_like
     """
-	cdef np.ndarray[DTYPE_t, ndim=1] com
+    cdef np.ndarray[DTYPE_t, ndim=1] com
     if (mass != None):
         com = np.sum([x[i,:]*mass[i] for i in range(len(mass))], axis=0)/np.sum(mass)
     else:
-	com = np.sum(x, axis=0)/len(x)
+        com = np.sum(x, axis=0)/len(x)
     return com
