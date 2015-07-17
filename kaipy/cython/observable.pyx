@@ -87,7 +87,7 @@ def rg2(np.ndarray[DTYPE_t, ndim=1] x):
     return rg2
 
 
-def rg2_compwise(np.ndarray[DTYPE_t, ndim=1] x):
+def rg2_compwise(np.ndarray[DTYPE_t, ndim=2] x):
     """ Square radius of gyration component-wise.
 
     Calculates the componentwise squared radius of gyration
@@ -111,7 +111,7 @@ def rg2_compwise(np.ndarray[DTYPE_t, ndim=1] x):
     return rg2[0], rg2[1], rg2[2]
 
 
-def end_to_end_distance(np.ndarray[DTYPE_t, ndim=1] x):
+def end_to_end_distance(np.ndarray[DTYPE_t, ndim=2] x):
     """ End to end distance of polymer.
 
     Calculates the absolute value of the end to end vector
@@ -129,7 +129,7 @@ def end_to_end_distance(np.ndarray[DTYPE_t, ndim=1] x):
     return np.linalg.norm(x[-1]-x[0])
 
 
-def center_of_mass(np.ndarray[DTYPE_t, ndim=1] x,
+def center_of_mass(np.ndarray[DTYPE_t, ndim=2] x,
 		                  np.ndarray[DTYPE_t, ndim=1] mass=None):
     """ Center of mass of polymer.
 
