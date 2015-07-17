@@ -1,5 +1,13 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
+from Cython.Build import cythonize
+from Cython.Distutils import build_ext
+from distutils.extension import Extension
+import sys
+if 'setuptools.extension' in sys.modules:
+    m = sys.modules['setuptools.extension']
+    m.Extension.__dict__ = m._Extension.__dict__
+import numpy
 # Get current version
 execfile('./kaipy/version.py')
 
@@ -20,5 +28,12 @@ setup(
         'Topic :: Scientific/Engineering :: Physics'
     ],
     packages=find_packages(),
-    install_requires=['numpy>=1.9.2']
+	cmdclass = {'build_ext': build_ext},
+    ext_modules = [
+		           Extension('kaipy.cython.observable', 
+					         sources=['kaipy/cython/observable.pyx'],
+                             include_dirs=[numpy.get_include()]
+							 )
+				   ],
+    install_requires=['numpy>=1.9.2','cython>=0.22.0']
 )
