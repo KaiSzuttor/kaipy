@@ -20,7 +20,7 @@ cimport numpy as np
 ctypedef np.float64_t DTYPE_t
 
 def second_legendre(np.ndarray[DTYPE_t, ndim=1] pos1,
-		np.ndarray[DTYPE_t,	ndim=2] pos2, np.str direction):
+		np.ndarray[DTYPE_t,	ndim=1] pos2, direction):
     """ Calculate the second legendre polonomial.
 
     Calculates second legendre polonomial of two given position vectors
@@ -49,11 +49,11 @@ def second_legendre(np.ndarray[DTYPE_t, ndim=1] pos1,
     cdef np.ndarray[DTYPE_t, ndim=1] vec2
     try:
         if (direction == 'x'):
-            vec2 = np.array([1, 0, 0])
+            vec2 = np.array([1.0, 0.0, 0.0])
         elif (direction == 'y'):
-            vec2 = np.array([0, 1, 0])
+            vec2 = np.array([0.0, 1.0, 0.0])
         elif (direction == 'z'):
-            vec2 = np.array([0, 0, 1])
+            vec2 = np.array([0.0, 0.0, 1.0])
     except:
         raise ValueError("Argument must be 'x','y' or 'z'")
     cdef DTYPE_t v1_norm = np.sqrt((vec1 * vec1).sum())
