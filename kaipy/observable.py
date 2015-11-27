@@ -146,7 +146,7 @@ def center_of_mass(x, mass=None):
     if (mass != None):
         com = np.sum([x[i,:]*mass[i] for i in range(len(mass))], axis=0)/np.sum(mass)
     else:
-	com = np.sum(x, axis=0)/len(x)
+        com = np.sum(x, axis=0)/len(x)
     return com
 	    
 
