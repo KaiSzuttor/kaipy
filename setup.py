@@ -1,7 +1,10 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 # Get current version
-execfile('./kaipy/version.py')
+#execfile('./kaipy/version.py')
+with open("./kaipy/version.py") as f:
+    code = compile(f.read(), "./kaipy/version.py", 'exec')
+    exec(code)
 
 setup(
     name='kaipy',
