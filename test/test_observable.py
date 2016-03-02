@@ -6,7 +6,7 @@ import numpy as np
 from kaipy.observable import second_legendre, rg2, rg2_compwise,\
                              end_to_end_distance
 
-class Second_legendre_test(unittest.TestCase):
+class Test_Second_legendre(unittest.TestCase):
 
     def test_x(self):
         self.assertEqual(second_legendre(np.array([0,0,0]),
@@ -39,7 +39,7 @@ class Second_legendre_test(unittest.TestCase):
                          -.5)
 
         
-class Rg2_test(unittest.TestCase):
+class Test_Rg2(unittest.TestCase):
 
     def setUp(self):
         self.number_of_coordinates = 10000
@@ -50,7 +50,7 @@ class Rg2_test(unittest.TestCase):
         self.assertAlmostEqual(rg2(self.coordinates),12,delta=0.01)
 
 
-class Rg2_compwise_test(unittest.TestCase):
+class Test_Rg2_compwise(unittest.TestCase):
 
     def setUp(self):
         self.number_of_coordinates = 10000
@@ -68,7 +68,7 @@ class Rg2_compwise_test(unittest.TestCase):
     def test_function_z(self):
         self.assertAlmostEqual(rg2_compwise(self.coordinates)[2],12,delta=0.01)
 
-class End_to_end_distance_test(unittest.TestCase):
+class Test_End_to_end_distance(unittest.TestCase):
     def setUp(self):
         self.coordinates = []
         self.coordinates.append(np.array([1,1,0]))
@@ -79,4 +79,9 @@ class End_to_end_distance_test(unittest.TestCase):
 
 
 if __name__ == "__main__": 
-    unittest.main()
+    suite1 = unittest.TestLoader().loadTestsFromTestCase(Test_Second_legendre)
+    suite2 = unittest.TestLoader().loadTestsFromTestCase(Test_Rg2)
+    suite3 = unittest.TestLoader().loadTestsFromTestCase(Test_Rg2_compwise)
+    suite4 = unittest.TestLoader().loadTestsFromTestCase(Test_End_to_end_distance)
+    alltests = unittest.TestSuite([suite1,suite2,suite3,suite4])
+    unittest.TextTestRunner(verbosity=2).run(alltests)
