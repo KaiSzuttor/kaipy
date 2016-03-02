@@ -23,5 +23,6 @@ setup(
         'Topic :: Scientific/Engineering :: Physics'
     ],
     packages=find_packages(),
-    install_requires=['numpy>=1.9.2']
+    install_requires=['numpy>=1.9.2'],
+    test_suite="test"
 )

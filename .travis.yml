@@ -4,5 +4,10 @@ python:
 # command to install dependencies
 install:
   - "pip install ."
+  - "pip install coveralls"
+  - "pip install coverage"
 # command to run tests
-script: ./test/test_observable.py
+script: coverage run setup.py test
+
+after_success:
+    coveralls

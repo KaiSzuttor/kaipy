@@ -1,0 +1,6 @@
+[run]
+source = kaipy
+[report]
+exclude_lines = 
+    pragma: no cover
+    
