@@ -126,7 +126,6 @@ def calc_error(data):
     account that these series are to some kind degree correlated (which
     enhances the estimated statistical error).
     """
-    data = np.loadtxt(data)
     # calculate the normalized autocorrelation function of data
     acf = autocorrelation(data, nlags=1000)
     # calculate the integrated correlation time tau_int
