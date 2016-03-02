@@ -47,7 +47,7 @@
 import numpy as np
 
 
-def _bit_length_26(x):
+def _bit_length_26(x): #pragma: no cover
     if x == 0:
         return 0
     elif x == 1:
@@ -56,7 +56,7 @@ def _bit_length_26(x):
         return len(bin(x)) - 2
 
 
-def _next_regular(target):
+def _next_regular(target): #pragma: no cover
     """
     Find the next regular number greater than or equal to target.
     Regular numbers are composites of the prime factors 2, 3, and 5.

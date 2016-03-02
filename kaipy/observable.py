@@ -50,13 +50,14 @@ def second_legendre(pos1, pos2, direction):
             vec2 = np.array([0, 1, 0])
         elif (direction == 'z'):
             vec2 = np.array([0, 0, 1])
+        v1_norm = np.sqrt((vec1 * vec1).sum())
+        v2_norm = np.sqrt((vec2 * vec2).sum())
+        cos_angle = np.dot(vec1, vec2) / (v1_norm * v2_norm)
+        second_legendre = 0.5 * (3 * cos_angle * cos_angle - 1)
+        return second_legendre
     except:
         raise ValueError("Argument must be 'x','y' or 'z'")
-    v1_norm = np.sqrt((vec1 * vec1).sum())
-    v2_norm = np.sqrt((vec2 * vec2).sum())
-    cos_angle = np.dot(vec1, vec2) / (v1_norm * v2_norm)
-    second_legendre = 0.5 * (3 * cos_angle * cos_angle - 1)
-    return second_legendre
+    
 
 
 def rg2(x):
@@ -143,10 +144,10 @@ def center_of_mass(x, mass=None):
     -------
     array_like
     """
-    if (mass != None):
-        com = np.sum([x[i,:]*mass[i] for i in range(len(mass))], axis=0)/np.sum(mass)
+    if (mass is not None):
+        com = np.average(x, axis=0, weights=mass)
     else:
-        com = np.sum(x, axis=0)/len(x)
+        com = np.average(x, axis=0)
     return com
 	    
 
