@@ -27,7 +27,7 @@ In the cloned directory use pip to install
 
   pip install . 
   
-If you don't have root permissions, you can install it into your home directory by using the user flag of pip
+If you don't have root permissions, you can install the module in your home directory (.config) by using the user flag of pip
 
 .. code:: bash
 
