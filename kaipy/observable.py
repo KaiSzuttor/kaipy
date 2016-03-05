@@ -151,3 +151,79 @@ def center_of_mass(x, mass=None):
     return com
 	    
 
+def radial_distribution(h5md_pos, h5md_species, SPECIES_1, SPECIES_2, TIMESTEP_MIN, TIMESTEP_MAX, BOX_L, N_BINS, R_MIN, R_MAX=None):
+    """ Radial distribution function.
+
+    Calculates the radial distribution function
+    (RDF) for a trajectory array h5md_pos with the 
+    content [timesteps, particles, xyz] in the 
+    h5md format (see http://nongnu.org/h5md/ 
+    for details). 
+
+    Parameters
+    ----------
+    h5md_pos: array_like
+        Three dimensional array of the particle
+        trajectory.
+    h5md_species: array like
+        One dimensional array of length number
+        of particles (h5md_pos.shape[1]).
+    SPECIES_1: int
+        First species for which the RDF is 
+        calculated.
+    SPECIES_2: int
+        Second species (see SPECIES_1).
+    TIMESTEP_MIN: int
+        Lower limit of the range of timesteps
+        for the RDF calculation.
+    TIMESTEP_MAX: int
+        Upper limit of the range (see TIMESTEP_MIN).
+    BOX_L: float
+        Length of the cubic simulation box.
+    N_BINS: int
+        Number of bins for the RDF.
+    R_MIN: float
+        Minimum radial distance for the RDF.
+    R_MAX: float
+        Maximum radial distance for the RDF. Defaults to BOX_L/2.
+    Returns
+    -------
+    array_like, array_like
+        The first array is the RDF, the second histogram
+        is the array of the midpositons of the bins.
+    """
+    if R_MAX is None:
+        R_MAX = 0.5 * BOX_L # due to minimum image convention
+    VOLUME = BOX_L*BOX_L*BOX_L
+    step = (R_MAX-R_MIN)/float(N_BINS)
+    bin_edges = np.linspace(R_MIN, R_MAX, num=N_BINS+1, endpoint=True)
+    N_SPECIES_1 = h5md_pos[0,h5md_species[:]==SPECIES_1,0].shape[0]
+    N_SPECIES_2 = h5md_pos[0,h5md_species[:]==SPECIES_2,0].shape[0]
+    hist_master = np.zeros(N_BINS)
+
+    for i in range(TIMESTEP_MIN, TIMESTEP_MAX):
+        bin_mids = (bin_edges + 0.5*step)[:-1]
+        hist = np.zeros(N_BINS)
+        count = 0 
+        print i
+        SPECIES_1_pos = h5md_pos[i,h5md_species[:]==SPECIES_1,:]
+        SPECIES_2_pos = h5md_pos[i,h5md_species[:]==SPECIES_2,:]
+        for j in range(N_SPECIES_1):
+            for k in range(N_SPECIES_2):
+                diff_vector = SPECIES_1_pos[j,:] - SPECIES_2_pos[k,:]
+                diff_vector_minimum_image = diff_vector - BOX_L * np.rint(diff_vector/BOX_L)
+                norm_diff_vector_minimum_image = np.linalg.norm(diff_vector_minimum_image)
+                if (norm_diff_vector_minimum_image > R_MIN and norm_diff_vector_minimum_image < R_MAX):
+                    hist_bin = np.digitize(np.array([norm_diff_vector_minimum_image,]), bin_edges)[0]-1
+                    hist[hist_bin] += 1
+                    count += 1
+
+        for i in range(0,len(bin_edges)-1):
+            r_in = bin_edges[i]
+            r_out = r_in + step
+            bin_volume = 4.0/3.0 * np.pi*((r_out*r_out*r_out) - (r_in*r_in*r_in))
+            hist[i] *= VOLUME/ ( bin_volume*float(count) )
+        hist_master += hist
+    hist_master /= float(TIMESTEP_MAX-TIMESTEP_MIN)
+    return hist_master, bin_mids
+
