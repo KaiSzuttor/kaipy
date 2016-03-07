@@ -200,12 +200,10 @@ def radial_distribution(h5md_pos, h5md_species, SPECIES_1, SPECIES_2, TIMESTEP_M
     N_SPECIES_1 = h5md_pos[0,h5md_species[:]==SPECIES_1,0].shape[0]
     N_SPECIES_2 = h5md_pos[0,h5md_species[:]==SPECIES_2,0].shape[0]
     hist_master = np.zeros(N_BINS)
-
     for i in range(TIMESTEP_MIN, TIMESTEP_MAX):
         bin_mids = (bin_edges + 0.5*step)[:-1]
         hist = np.zeros(N_BINS)
         count = 0 
-        print i
         SPECIES_1_pos = h5md_pos[i,h5md_species[:]==SPECIES_1,:]
         SPECIES_2_pos = h5md_pos[i,h5md_species[:]==SPECIES_2,:]
         for j in range(N_SPECIES_1):
