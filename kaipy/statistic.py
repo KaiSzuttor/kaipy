@@ -127,7 +127,7 @@ def calc_error(data):
     enhances the estimated statistical error).
     """
     # calculate the normalized autocorrelation function of data
-    acf = autocorrelation(data, nlags=1000)
+    acf = autocorrelation(data, nlags=len(data))
     # calculate the integrated correlation time tau_int
     # (Janke, Wolfhard. "Statistical analysis of simulations: Data correlations
     # and error estimation." Quantum Simulations of Complex Many-Body Systems:
@@ -139,7 +139,10 @@ def calc_error(data):
     # mean value of the time series
     data_mean = np.mean(data)
     # calculate the so called effective length of the time series N_eff
-    N_eff = len(data) / (2.0 * tau_int)
-    # finally the error is sqrt(var(data)/N_eff)
-    stat_err = np.sqrt(np.var(data) / N_eff)
+    if (tau_int > 0):
+        N_eff = len(data) / (2.0 * tau_int)
+        # finally the error is sqrt(var(data)/N_eff)
+        stat_err = np.sqrt(np.var(data) / N_eff)
+    else:
+        stat_err = np.sqrt(np.var(data) / len(data))
     return data_mean, stat_err
