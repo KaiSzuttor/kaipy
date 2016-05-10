@@ -235,8 +235,7 @@ def msd_fft(x):
     "Calandrini, Vania, et al. "nMoldyn-Interfacing 
     spectroscopic experiments, molecular dynamics 
     simulations and models for time correlation 
-    functions." École thématique de la Société 
-    Française de la Neutronique 12 (2011): 201-232."
+    functions."
 
     Parameters
     ----------
