@@ -139,7 +139,7 @@ def calc_error(data):
     # mean value of the time series
     data_mean = np.mean(data)
     # calculate the so called effective length of the time series N_eff
-    if (tau_int > 0):
+    if (tau_int > 0.5):
         N_eff = len(data) / (2.0 * tau_int)
         # finally the error is sqrt(var(data)/N_eff)
         stat_err = np.sqrt(np.var(data) / N_eff)
