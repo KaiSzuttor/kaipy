@@ -76,10 +76,9 @@ def rg2(x):
 
     """
     rg2 = 0.0
-    r_mean = np.zeros(3)
-    r_mean[:] = np.mean(x, axis=0)
+    r_mean = center_of_mass(x)
     for i in range(len(x)):
-        rg2 += np.dot((x[i] - r_mean), (x[i] - r_mean))
+        rg2 += np.dot((x[i,:] - r_mean), (x[i,:] - r_mean))
     rg2 /= len(x)
     return rg2
 
@@ -100,8 +99,7 @@ def rg2_compwise(x):
     float, float, float
     """
     rg2 = np.zeros(3)
-    r_mean = np.zeros(3)
-    r_mean[:] = np.mean(x, axis=0)
+    r_mean = center_of_mass(x)
     for i in range(len(x)):
         rg2 += (x[i]-r_mean)**2
     rg2 /= len(x)
@@ -225,6 +223,14 @@ def radial_distribution(h5md_pos, h5md_species, SPECIES_1, SPECIES_2, TIMESTEP_M
     hist_master /= float(TIMESTEP_MAX-TIMESTEP_MIN)
     return hist_master, bin_mids
 
+
+def minimum_image_distance_vector(pos1, pos2, boxl):
+    return np.array((pos2-pos1)-boxl*np.rint((pos2-pos1)/boxl))
+
+
+def minimum_image_distance(pos1, pos2, boxl):
+    return np.linalg.norm((pos2-pos1)-boxl*np.rint((pos2-pos1)/boxl))
+    
 
 def msd_fft(x):
     """ Mean square displacement.
