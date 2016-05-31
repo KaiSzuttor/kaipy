@@ -76,10 +76,9 @@ def rg2(x):
 
     """
     rg2 = 0.0
-    r_mean = np.zeros(3)
-    r_mean[:] = np.mean(x, axis=0)
+    r_mean = center_of_mass(x)
     for i in range(len(x)):
-        rg2 += np.dot((x[i] - r_mean), (x[i] - r_mean))
+        rg2 += np.dot((x[i,:] - r_mean), (x[i,:] - r_mean))
     rg2 /= len(x)
     return rg2
 
@@ -100,8 +99,7 @@ def rg2_compwise(x):
     float, float, float
     """
     rg2 = np.zeros(3)
-    r_mean = np.zeros(3)
-    r_mean[:] = np.mean(x, axis=0)
+    r_mean = center_of_mass(x)
     for i in range(len(x)):
         rg2 += (x[i]-r_mean)**2
     rg2 /= len(x)
@@ -235,3 +233,50 @@ def radial_distribution(h5md_pos, h5md_species, SPECIES_1, SPECIES_2, TIMESTEP_M
     hist_master /= float(TIMESTEP_MAX-TIMESTEP_MIN)
     return hist_master, bin_mids
 
+
+def minimum_image_distance_vector(pos1, pos2, boxl):
+    return np.array((pos2-pos1)-boxl*np.rint((pos2-pos1)/boxl))
+
+
+def minimum_image_distance(pos1, pos2, boxl):
+    return np.linalg.norm((pos2-pos1)-boxl*np.rint((pos2-pos1)/boxl))
+    
+
+def msd_fft(x):
+    """ Mean square displacement.
+
+    Calculates the mean square displacement for
+    given coordinates x. Implementation is taken
+    from stackexchange and the idea is from
+    "Calandrini, Vania, et al. "nMoldyn-Interfacing 
+    spectroscopic experiments, molecular dynamics 
+    simulations and models for time correlation 
+    functions."
+
+    Parameters
+    ----------
+    x: array_like
+        Array of length number of beads of polymer.
+
+    Returns
+    -------
+    array_like
+    """
+    def autocorr(x):
+        N=len(x)
+        F = np.fft.fft(x, n=2*N)  #2*N because of zero-padding
+        PSD = F * F.conjugate()
+        res = np.fft.ifft(PSD)
+        res= (res[:N]).real   #now we have the autocorrelation in convention B
+        n=N*np.ones(N)-np.arange(0,N) #divide res(m) by (N-m)
+        return res/n #this is the autocorrelation in convention A
+    N = x.shape[0]
+    D = np.square(x).sum(axis=1)
+    D = np.append(D,0)
+    S2 = sum([autocorr(x[:,i]) for i in range(x.shape[1])])
+    Q = 2*D.sum()
+    S1 = np.zeros(N)
+    for m in range(N):
+        Q = Q-D[m-1]-D[N-m]
+        S1[m]=Q/(N-m)
+    return S1-2*S2
