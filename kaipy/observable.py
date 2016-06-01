@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
-
+import math
 
 def second_legendre(pos1, pos2, direction):
     """ Calculate the second legendre polonomial.
@@ -195,8 +195,9 @@ def radial_distribution(h5md_pos, h5md_species, SPECIES_1, SPECIES_2, TIMESTEP_M
     VOLUME = BOX_L*BOX_L*BOX_L
     step = (R_MAX-R_MIN)/float(N_BINS)
     bin_edges = np.linspace(R_MIN, R_MAX, num=N_BINS+1, endpoint=True)
-    N_SPECIES_1 = h5md_pos[0,h5md_species[:]==SPECIES_1,0].shape[0]
-    N_SPECIES_2 = h5md_pos[0,h5md_species[:]==SPECIES_2,0].shape[0]
+    N_SPECIES_1 = np.sum(h5md_species[:]==SPECIES_1)
+    N_SPECIES_2 = np.sum(h5md_species[:]==SPECIES_2)
+    print "N_SPECIES: ", N_SPECIES_1, N_SPECIES_2
     hist_master = np.zeros(N_BINS)
     for i in range(TIMESTEP_MIN, TIMESTEP_MAX):
         bin_mids = (bin_edges + 0.5*step)[:-1]
@@ -204,6 +205,11 @@ def radial_distribution(h5md_pos, h5md_species, SPECIES_1, SPECIES_2, TIMESTEP_M
         count = 0 
         SPECIES_1_pos = h5md_pos[i,h5md_species[:]==SPECIES_1,:]
         SPECIES_2_pos = h5md_pos[i,h5md_species[:]==SPECIES_2,:]
+        nans1 = np.count_nonzero(np.isnan(SPECIES_1_pos))
+        nans2 = np.count_nonzero(np.isnan(SPECIES_2_pos))
+        if (nans1 > 0 or nans2 > 0):
+            print "DEBUG\tnumber of nan values: ", nans1, nans2
+            break
         for j in range(N_SPECIES_1):
             for k in range(N_SPECIES_2):
                 diff_vector = SPECIES_1_pos[j,:] - SPECIES_2_pos[k,:]
@@ -213,7 +219,11 @@ def radial_distribution(h5md_pos, h5md_species, SPECIES_1, SPECIES_2, TIMESTEP_M
                     hist_bin = np.digitize(np.array([norm_diff_vector_minimum_image,]), bin_edges)[0]-1
                     hist[hist_bin] += 1
                     count += 1
-
+                elif (count==0 and math.isnan(norm_diff_vector_minimum_image)):
+                    print "DEBUG\tdiff_vector: ", diff_vector
+                    print "DEBUG\tSPECIES_1_pos: ", SPECIES_1_pos[j,:]
+                    print "DEBUG\tSPECIES_2_pos: ", SPECIES_2_pos[k,:], "\n"
+    
         for i in range(0,len(bin_edges)-1):
             r_in = bin_edges[i]
             r_out = r_in + step
