@@ -105,7 +105,7 @@ def _next_regular(target): #pragma: no cover
     return match
 
 
-def autocorrelation(x, nlags=50):
+def autocorrelation(x, nlags=50, normalized=True):
     """
     Compute autocorrelation using FFT
     """
@@ -115,7 +115,8 @@ def autocorrelation(x, nlags=50):
     n = _next_regular(2 * nobs + 1)
     Frf = np.fft.fft(x0, n=n)
     acf = np.fft.ifft(Frf * np.conjugate(Frf))[:nobs] / nobs
-    acf /= acf[0]
+    if normalized:
+        acf /= acf[0]
     acf = np.real(acf[:nlags + 1])
     return acf
 
