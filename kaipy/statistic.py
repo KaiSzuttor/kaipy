@@ -105,7 +105,7 @@ def _next_regular(target): #pragma: no cover
     return match
 
 
-def autocorrelation(x, nlags=50, normalized=True):
+def autocorrelation(x, normalized=True):
     """
     Compute autocorrelation using FFT
     """
@@ -117,8 +117,11 @@ def autocorrelation(x, nlags=50, normalized=True):
     acf = np.fft.ifft(Frf * np.conjugate(Frf))[:nobs] / nobs
     if normalized:
         acf /= acf[0]
-    acf = np.real(acf[:nlags + 1])
-    return acf
+    acf = np.real(acf)
+    # only return half of the ACF 
+    # (see 4.3.1 "Kreuzkorrelationsfunktion" 
+    # of https://github.com/arnolda/padc)
+    return acf[:nobs/2]
 
 
 def calc_error(data):
@@ -128,15 +131,16 @@ def calc_error(data):
     enhances the estimated statistical error).
     """
     # calculate the normalized autocorrelation function of data
-    acf = autocorrelation(data, nlags=len(data))
+    acf = autocorrelation(data)
     # calculate the integrated correlation time tau_int
     # (Janke, Wolfhard. "Statistical analysis of simulations: Data correlations
     # and error estimation." Quantum Simulations of Complex Many-Body Systems:
     # From Theory to Algorithms 10 (2002): 423-445.)
     tau_int = 0.5
-    k_max = len(acf)
-    for k in range(1, k_max):
-        tau_int += acf[k]
+    for i in range(len(acf)):
+        tau_int += acf[i]
+        if ( i >= 6 * tau_int ):
+            break
     # mean value of the time series
     data_mean = np.mean(data)
     # calculate the so called effective length of the time series N_eff
