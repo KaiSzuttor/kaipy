@@ -279,3 +279,23 @@ def msd_fft(x):
         Q = Q-D[m-1]-D[N-m]
         S1[m]=Q/(N-m)
     return S1-2*S2
+
+
+def rouse_mode(x, p):
+    """ Rouse mode `p`.
+
+    Calculated the Rouse mode `p` for a polymer with coordinates
+    `x`.
+
+    Parameters
+    ----------
+    x: array_like
+       Array of length number of beads of polymer.
+    p: int
+       Number indicating the Rouse mode.
+    """
+    N = x.shape[1]  # Number of monomers
+    res = np.zeros(N)
+    for i in range(1,N+1):
+        res += x[i-1] * np.cos((float(i)-0.5)*np.pi*float(p)/N)
+    return np.sqrt(2.0/float(N))*res
