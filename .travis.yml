@@ -1,17 +1,7 @@
-language: python
+language: generic
 
-python:
-  - "2.7"
+sudo: required
+services: docker
 
-# commands to install dependencies
-before_install:
-  - pip install codecov
-
-install:
-  - pip install .
-  - pip install coverage
-# command to run tests
-script: coverage run setup.py test
-
-after_success:
-  - codecov
+script:
+  - maintainer/travis/build_docker.sh
