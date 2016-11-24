@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y \
     apt-utils \
     cmake \
+    curl \
     build-essential \
     openmpi-bin \
     libfftw3-dev \
