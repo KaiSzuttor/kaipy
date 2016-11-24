@@ -3,5 +3,4 @@ language: generic
 sudo: required
 services: docker
 
-script:
-  - maintainer/travis/build_docker.sh
+script: maintainer/travis/build_docker.sh
