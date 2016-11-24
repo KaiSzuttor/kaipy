@@ -23,6 +23,6 @@ setup(
         'Topic :: Scientific/Engineering :: Physics'
     ],
     packages=find_packages(),
-    install_requires=['numpy>=1.9.2'],
+    install_requires=['numpy>=1.9.2', 'h5py>=2.6.0'],
     test_suite="test"
 )
