@@ -19,9 +19,9 @@ def h5md_pos(h5_dh, ts=None, folded=True):
             h5_id = h5_dh["particles/atoms/id/value"][:, :, :]
             h5_image = h5_dh["particles/atoms/image/value"][:, :, :]
         else:
-            h5_pos = h5_dh["particles/atoms/position/value"][np.min(ts):np.max(ts), :, :]
-            h5_id = h5_dh["particles/atoms/id/value"][np.min(ts):np.max(ts), :, :]
-            h5_image = h5_dh["particles/atoms/image/value"][np.min(ts):np.max(ts), :, :]
+            h5_pos = h5_dh["particles/atoms/position/value"][np.min(ts):np.max(ts)+1, :, :]
+            h5_id = h5_dh["particles/atoms/id/value"][np.min(ts):np.max(ts)+1, :, :]
+            h5_image = h5_dh["particles/atoms/image/value"][np.min(ts):np.max(ts)+1, :, :]
         # number of timesteps: n_ts
         n_ts = h5_pos.shape[0]
         result = np.zeros(h5_pos.shape)
