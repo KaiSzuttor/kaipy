@@ -114,7 +114,7 @@ def autocorrelation(x, normalized=True):
     x0 = x - x.mean()
     n = _next_regular(2 * nobs + 1)
     Frf = np.fft.fft(x0, n=n)
-    acf = np.fft.ifft(Frf * np.conjugate(Frf))[:nobs] / nobs
+    acf = np.fft.ifft(Frf * np.conjugate(Frf))[:nobs] / np.arange(nobs, 0, -1)
     if normalized:
         acf /= acf[0]
     acf = np.real(acf)
