@@ -297,5 +297,5 @@ def rouse_mode(x, p):
     N = x.shape[0]  # Number of monomers
     res = np.zeros(x.shape[1])
     for i in range(0,N):
-        res += x[i,:] * np.cos((float(i+0.5)*np.pi*float(p)/N)
+        res += x[i,:] * np.cos((float(i+0.5)*np.pi*float(p)/N))
     return np.sqrt(2.0/float(N))*res
