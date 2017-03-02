@@ -63,7 +63,7 @@ author = u'Kai Szuttor'
 # built documents.
 #
 # The short X.Y version.
-execfile('../../kaipy/')
+execfile('../../kaipy/version.py')
 version = __version__
 # The full version, including alpha/beta/rc tags.
 release = __version__
