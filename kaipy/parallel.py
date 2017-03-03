@@ -26,15 +26,16 @@ class ParallelTrajectory(object):
         Parameters:
         -----------
         comm : mpi4py.MPI.Intracomm
-              MPI communicator.
+               MPI communicator.
         obs : function
               Function to be used for the calculation.
         res_shape : tuple
                     Shape of data returned by obs (ommit the time dimesnional contribution).
         n_ts : int
-               Number of timesteps to consider.
+               Number of timesteps to consider. If 0, n_ts defaults to the
+               maximum number of timesteps
         stride : int
-                Timestep stride.
+                 Timestep stride.
         offset : int
                  Timestep offset.
 
@@ -90,6 +91,7 @@ class ParallelTrajectory(object):
     def run(self):
         """
         Method to perform the actual commputation.
+
         """
         pass
 
@@ -97,6 +99,7 @@ class ParallelTrajectory(object):
     def communicate(self):
         """
         Method to communicate results.
+
         """
         pass
 
@@ -104,6 +107,7 @@ class ParallelTrajectory(object):
 class H5mdParallelTrajectory(ParallelTrajectory):
     """
     Parallel evaluation for H5MD files.
+
     """
 
     def __init__(self, **kwargs):
@@ -113,6 +117,7 @@ class H5mdParallelTrajectory(ParallelTrajectory):
 
         h5md_file : h5py._hl.files.File
                     Instance of a H5MD file object.
+
         """
         # pylint: disable=too-many-instance-attributes
         super(H5mdParallelTrajectory, self).__init__(**kwargs)
@@ -133,7 +138,10 @@ class H5mdParallelTrajectory(ParallelTrajectory):
         self.obs = kwargs['obs']
         self.mpi_buffer = np.zeros(
             ((self.timestep_range.shape[0],) + kwargs['res_shape']))
-        self.n_ts = kwargs['n_ts']
+        if kwargs['n_ts'] == 0:
+            self.n_ts = self.h5md['pos'].shape[0]
+        else:
+            self.n_ts = kwargs['n_ts']
         self.stride = kwargs['stride']
         self.offset = kwargs['offset']
         self.res_shape = kwargs['res_shape']
