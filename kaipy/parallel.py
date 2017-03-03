@@ -45,8 +45,6 @@ class ParallelTrajectory(object):
         self.comm = kwargs['comm']
         self.mpi_rank = self.comm.Get_rank()
         self.mpi_size = self.comm.Get_size()
-        self.timestep_range = self.calc_range(self.mpi_rank, kwargs['n_ts'],
-                                              kwargs['stride'], kwargs['offset'])
 
     def calc_range(self, rank, n_ts, stride, offset=0):
         """
@@ -136,15 +134,17 @@ class H5mdParallelTrajectory(ParallelTrajectory):
             raise ValueError(
                 "H5MD file does not contain valid position dataset.")
         self.obs = kwargs['obs']
-        self.mpi_buffer = np.zeros(
-            ((self.timestep_range.shape[0],) + kwargs['res_shape']))
+        self.stride = kwargs['stride']
+        self.offset = kwargs['offset']
+        self.res_shape = kwargs['res_shape']
         if kwargs['n_ts'] == 0:
             self.n_ts = self.h5md['pos'].shape[0]
         else:
             self.n_ts = kwargs['n_ts']
-        self.stride = kwargs['stride']
-        self.offset = kwargs['offset']
-        self.res_shape = kwargs['res_shape']
+        self.timestep_range = self.calc_range(self.mpi_rank, self.n_ts,
+                                              self.stride, self.offset)
+        self.mpi_buffer = np.zeros(
+            ((self.timestep_range.shape[0],) + kwargs['res_shape']))
 
     def run(self, *args):
         for j, i in enumerate(self.timestep_range):
