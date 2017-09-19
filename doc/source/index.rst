@@ -12,9 +12,15 @@ Contents:
    :maxdepth: 2
    
 .. automodule:: observable
-   :members: 
+   :members:
+
 .. automodule:: statistic
-   :members: 
+
+.. automodule:: util
+   :members:
+
+.. automodule:: parallel
+   :members:
 
 
 Indices and tables
@@ -23,4 +29,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
