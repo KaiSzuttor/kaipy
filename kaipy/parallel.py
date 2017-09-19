@@ -39,7 +39,6 @@ class ParallelTrajectory(object):
         offset : int
                  Timestep offset.
 
-
         """
         self.total_result = None
         self.comm = kwargs['comm']
@@ -70,12 +69,12 @@ class ParallelTrajectory(object):
         elif rank == self.mpi_size - 1:
             res = np.arange(start, n_ts, stride)
             i = 1
-            while res[0] % stride != 0:
+            while (res[0] % stride) != 0:
                 res = np.arange(start + i, n_ts, stride)
                 i += 1
             res += offset
-            while res[-1] > n_ts:
-                res = np.arange(res[0], res[-1] - stride, stride)
+            while res[-1] > (n_ts-1):
+                res = np.arange(res[0], res[-1], stride)
             return res
         else:
             res = np.arange(start, stop, stride)
@@ -138,7 +137,7 @@ class H5mdParallelTrajectory(ParallelTrajectory):
         self.offset = kwargs['offset']
         self.res_shape = kwargs['res_shape']
         if kwargs['n_ts'] == 0:
-            self.n_ts = self.h5md['pos'].shape[0]
+            self.n_ts = self.h5md['pos'].shape[0] - self.offset
         else:
             self.n_ts = kwargs['n_ts']
         self.timestep_range = self.calc_range(self.mpi_rank, self.n_ts,
@@ -147,14 +146,14 @@ class H5mdParallelTrajectory(ParallelTrajectory):
             ((self.timestep_range.shape[0],) + kwargs['res_shape']))
 
     def run(self, *args):
-        for j, i in enumerate(self.timestep_range):
-            self.mpi_buffer[j] = self.obs(self.h5md['pos'][i, :, :], *args)
         logging.debug("Rank: {}, Start: {}, Stop: {}".format(self.mpi_rank,
                                                              self.timestep_range[
                                                                  0],
                                                              self.timestep_range[-1]))
         logging.debug("Rank: {}, mpi_buffer shape: {}".format(self.mpi_rank,
                                                               self.timestep_range.shape))
+        for j, i in enumerate(self.timestep_range):
+            self.mpi_buffer[j] = self.obs(self.h5md['pos'][i, :, :], *args)
 
     def communicate(self):
         if self.mpi_rank == 0:
