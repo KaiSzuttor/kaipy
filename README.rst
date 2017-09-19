@@ -4,9 +4,10 @@ kaipy
 
 Python package for data evaluation of simulations.
 
-Build status: |Build status|
+Build status: |Build status|_
 
 .. |Build status| image:: https://travis-ci.org/KaiSzuttor/kaipy.svg?branch=master
+.. _Build status: https://travis-ci.org/KaiSzuttor/kaipy
 
 Code coverage: |Code coverage|
 
