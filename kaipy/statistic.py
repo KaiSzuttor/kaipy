@@ -19,10 +19,11 @@ import numpy as np
 import math
 
 
-def autocorrelation(x, normalized=True):
+def autocorrelation(data, normalized=True):
     """
     Compute autocorrelation using FFT
     """
+    x = np.copy(data)
     nobs = len(x)
     x -= x.mean()
     n = 2**int(math.log(nobs, 2))
