@@ -16,6 +16,7 @@
 
 
 import numpy as np
+import math
 
 
 def autocorrelation(x, normalized=True):
@@ -34,13 +35,13 @@ def autocorrelation(x, normalized=True):
     # only return half of the ACF 
     # (see 4.3.1 "Kreuzkorrelationsfunktion" 
     # of https://github.com/arnolda/padc)
-    return acf[:x.shape[0]/2]
+    return acf[:int(x.shape[0]/2)]
 
 
 def calc_error(data):
     """
     Error estimation for time series of simulation observables and take into
-    account that these series are to some kind degree correlated (which
+    account that these series are correlated (which
     enhances the estimated statistical error).
     """
     # calculate the normalized autocorrelation function of data
