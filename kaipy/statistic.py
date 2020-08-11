@@ -23,20 +23,19 @@ def autocorrelation(data, normalized=True):
     """
     Compute autocorrelation using FFT
     """
-    x = np.copy(data)
-    nobs = len(x)
-    x -= x.mean()
+    nobs = len(data)
+    corr_data = data - data.mean()
     n = 2**int(math.log(nobs, 2))
-    x = x[:n]
-    Frf = np.fft.fft(x)
-    acf = np.fft.ifft(Frf * np.conjugate(Frf))/x.shape[0]
+    corr_data = corr_data[:n]
+    Frf = np.fft.fft(corr_data)
+    acf = np.fft.ifft(Frf * np.conjugate(Frf))/corr_data.shape[0]
     if normalized:
         acf /= acf[0]
     acf = np.real(acf)
     # only return half of the ACF 
     # (see 4.3.1 "Kreuzkorrelationsfunktion" 
     # of https://github.com/arnolda/padc)
-    return acf[:int(x.shape[0]/2)]
+    return acf[:int(corr_data.shape[0]/2)]
 
 
 def calc_error(data):
